@@ -4,13 +4,20 @@
   "description": "Image processing API",
   "main": "index.js",
   "scripts": {
-    "build": "npx tsc"
+    "build": "npx tsc",
+    "prettier": "prettier --config .prettierrc \"src/**/*.ts\" --write",
+    "eslint":"eslint . --ext. ts"
   },
   "author": "Mansoor CM",
   "license": "ISC",
   "devDependencies": {
     "@types/node": "^16.10.3",
+    "eslint": "^7.32.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "prettier": "^2.4.1",
     "ts-node": "^10.2.1",
     "typescript": "^4.4.3"
-  }
+  },
+  "dependencies": {}
 }
