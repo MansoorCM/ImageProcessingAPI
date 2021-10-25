@@ -35,20 +35,42 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-var imageResize = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-    return __generator(this, function (_a) {
-        try {
-            // const image = await fsPromises.readFile('/assets/thumb/berkshire.jpg')
-            // res.send('image read successfully')
-            console.log('successfully read data');
-            // console.log(image)
-        }
-        catch (err) {
-            console.log(err);
-        }
-        next();
-        return [2 /*return*/];
-    });
-}); };
-exports.default = imageResize;
+var path_1 = __importDefault(require("path"));
+var fileExists_1 = __importDefault(require("../../utilities/fileExists"));
+describe('Tests if file is present', function () {
+    var directory = path_1.default.resolve('./');
+    //works if the 'full' folder has the file 'berkshire.jpg'
+    it('returns true for existing file', function () { return __awaiter(void 0, void 0, void 0, function () {
+        var imagepath, result;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    imagepath = directory + '/assets/full/berkshire.jpg';
+                    return [4 /*yield*/, (0, fileExists_1.default)(imagepath)];
+                case 1:
+                    result = _a.sent();
+                    expect(result).toBe(true);
+                    return [2 /*return*/];
+            }
+        });
+    }); });
+    //works if the 'full' folder doesn't have the file 'apple.jpg'
+    it('returns false if file is missing', function () { return __awaiter(void 0, void 0, void 0, function () {
+        var wrongpath, result;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    wrongpath = directory + '/assets/full/apple.jpg';
+                    return [4 /*yield*/, (0, fileExists_1.default)(wrongpath)];
+                case 1:
+                    result = _a.sent();
+                    expect(result).toBe(false);
+                    return [2 /*return*/];
+            }
+        });
+    }); });
+});

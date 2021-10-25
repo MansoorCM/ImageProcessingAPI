@@ -39,59 +39,22 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var path_1 = __importDefault(require("path"));
-var fileExists_1 = __importDefault(require("./fileExists"));
-var resizeUsingSharp_1 = __importDefault(require("./resizeUsingSharp"));
-//middleware that performs the image resize functionality.
-var imageResize = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var filename, width, height, directory, destpath, sourcepath, imageExists, err_1;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                _a.trys.push([0, 6, , 7]);
-                filename = req.query.filename || '';
-                width = parseInt((req.query.width)) || 0;
-                height = parseInt((req.query.height)) || 0;
-                directory = path_1.default.resolve('./');
-                destpath = directory + '/assets/thumb/' + filename + '.jpg';
-                sourcepath = directory + '/assets/full/' + filename + '.jpg';
-                return [4 /*yield*/, (0, fileExists_1.default)(destpath)];
-            case 1:
-                imageExists = _a.sent();
-                if (!imageExists) return [3 /*break*/, 2];
-                //image exists
-                res.status(200).sendFile(destpath);
-                return [3 /*break*/, 5];
-            case 2:
-                //image doesn't exist, so resizing using sharp
-                if (filename == '') {
-                    res.send('Invalid filename');
+var supertest_1 = __importDefault(require("supertest"));
+var index_1 = __importDefault(require("../../index"));
+var request = (0, supertest_1.default)(index_1.default);
+//tests the main api, this has no real functionality(just sends a 'main api endpoint called' response)
+describe('Tests the main api endpoint', function () {
+    it('gets response of 200', function (done) { return __awaiter(void 0, void 0, void 0, function () {
+        var response;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, request.get('/api')];
+                case 1:
+                    response = _a.sent();
+                    expect(response.status).toBe(200);
+                    done();
                     return [2 /*return*/];
-                }
-                else if (width == 0 || height == 0) {
-                    res.send('Please provide valid width and height');
-                    return [2 /*return*/];
-                }
-                return [4 /*yield*/, (0, fileExists_1.default)(sourcepath)];
-            case 3:
-                if (!(_a.sent())) {
-                    res.send('file doesn\'t exist');
-                    return [2 /*return*/];
-                }
-                return [4 /*yield*/, (0, resizeUsingSharp_1.default)(width, height, sourcepath, destpath)];
-            case 4:
-                _a.sent();
-                res.status(200).sendFile(destpath);
-                _a.label = 5;
-            case 5: return [3 /*break*/, 7];
-            case 6:
-                err_1 = _a.sent();
-                console.log(err_1);
-                return [3 /*break*/, 7];
-            case 7:
-                next();
-                return [2 /*return*/];
-        }
-    });
-}); };
-exports.default = imageResize;
+            }
+        });
+    }); });
+});

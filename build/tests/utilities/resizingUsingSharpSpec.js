@@ -40,58 +40,29 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var path_1 = __importDefault(require("path"));
-var fileExists_1 = __importDefault(require("./fileExists"));
-var resizeUsingSharp_1 = __importDefault(require("./resizeUsingSharp"));
-//middleware that performs the image resize functionality.
-var imageResize = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var filename, width, height, directory, destpath, sourcepath, imageExists, err_1;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                _a.trys.push([0, 6, , 7]);
-                filename = req.query.filename || '';
-                width = parseInt((req.query.width)) || 0;
-                height = parseInt((req.query.height)) || 0;
-                directory = path_1.default.resolve('./');
-                destpath = directory + '/assets/thumb/' + filename + '.jpg';
-                sourcepath = directory + '/assets/full/' + filename + '.jpg';
-                return [4 /*yield*/, (0, fileExists_1.default)(destpath)];
-            case 1:
-                imageExists = _a.sent();
-                if (!imageExists) return [3 /*break*/, 2];
-                //image exists
-                res.status(200).sendFile(destpath);
-                return [3 /*break*/, 5];
-            case 2:
-                //image doesn't exist, so resizing using sharp
-                if (filename == '') {
-                    res.send('Invalid filename');
+var resizeUsingSharp_1 = __importDefault(require("../../utilities/resizeUsingSharp"));
+var fileExists_1 = __importDefault(require("../../utilities/fileExists"));
+//performs the image processing on the file berkshire.jpg and checks if processed image is in the 'thumbs' folder.
+//for accuracy if the file is already in the thumbs folder, delete it first before running the test.(this can be done in code). 
+describe('Tests the image processing', function () {
+    it('creates an image of given name in the \'thumb\' folder', function (done) { return __awaiter(void 0, void 0, void 0, function () {
+        var directory, imagepath, destpath, _a;
+        return __generator(this, function (_b) {
+            switch (_b.label) {
+                case 0:
+                    directory = path_1.default.resolve('./');
+                    imagepath = directory + '/assets/full/berkshire.jpg';
+                    destpath = directory + '/assets/full/berkshire.jpg';
+                    return [4 /*yield*/, (0, resizeUsingSharp_1.default)(400, 600, imagepath, destpath)];
+                case 1:
+                    _b.sent();
+                    _a = expect;
+                    return [4 /*yield*/, (0, fileExists_1.default)(destpath)];
+                case 2:
+                    _a.apply(void 0, [_b.sent()]).toBe(true);
+                    done();
                     return [2 /*return*/];
-                }
-                else if (width == 0 || height == 0) {
-                    res.send('Please provide valid width and height');
-                    return [2 /*return*/];
-                }
-                return [4 /*yield*/, (0, fileExists_1.default)(sourcepath)];
-            case 3:
-                if (!(_a.sent())) {
-                    res.send('file doesn\'t exist');
-                    return [2 /*return*/];
-                }
-                return [4 /*yield*/, (0, resizeUsingSharp_1.default)(width, height, sourcepath, destpath)];
-            case 4:
-                _a.sent();
-                res.status(200).sendFile(destpath);
-                _a.label = 5;
-            case 5: return [3 /*break*/, 7];
-            case 6:
-                err_1 = _a.sent();
-                console.log(err_1);
-                return [3 /*break*/, 7];
-            case 7:
-                next();
-                return [2 /*return*/];
-        }
-    });
-}); };
-exports.default = imageResize;
+            }
+        });
+    }); });
+});

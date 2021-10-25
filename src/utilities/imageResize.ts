@@ -1,15 +1,16 @@
-import {promises as fsPromises} from 'fs';
 import express from 'express';
 import path from 'path';
-import sharp from 'sharp';
+import fileExists from './fileExists';
+import resizeUsingSharp from './resizeUsingSharp';
 
+//middleware that performs the image resize functionality.
 const imageResize = async (req: express.Request, res: express.Response, next: Function) => {
 
     try{
         // get query parameters
-        const filename = req.query.filename;
-        const width = parseInt((req.query.width) as unknown as string);
-        const height = parseInt((req.query.height) as unknown as string);
+        const filename = req.query.filename || '';
+        const width = parseInt((req.query.width) as unknown as string) || 0;
+        const height = parseInt((req.query.height) as unknown as string) || 0;
 
         //get source and destination directories
         const directory = path.resolve('./')
@@ -21,7 +22,18 @@ const imageResize = async (req: express.Request, res: express.Response, next: Fu
             //image exists
             res.status(200).sendFile(destpath)
         }else{
-            //image doesn\'t exist, so resizing using sharp
+            //image doesn't exist, so resizing using sharp
+            if(filename == ''){
+              res.send('Invalid filename');
+              return
+            }else if(width == 0 || height == 0){
+              res.send('Please provide valid width and height')
+              return
+            }
+            if (! await fileExists(sourcepath)){
+              res.send('file doesn\'t exist');
+              return
+            }
             await resizeUsingSharp(width, height, sourcepath, destpath);
             res.status(200).sendFile(destpath)
         }
@@ -30,24 +42,5 @@ const imageResize = async (req: express.Request, res: express.Response, next: Fu
         }
         next();
 }
-
-// function to resize image using the "sharp" module.
-const resizeUsingSharp = async (setwidth: number, setheight: number, sourcepath: string, destpath: string) => {
-    try {
-      await sharp(sourcepath)
-        .resize(
-          setwidth,
-          setheight,
-          {fit:"contain"}
-        )
-        .toFormat("jpeg")
-        .toFile(destpath);
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-// checks if the resized image already exists. 
-const fileExists = async (path: string) => !!(await fsPromises.stat(path).catch(e => false));
 
 export default imageResize;

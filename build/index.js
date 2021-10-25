@@ -11,3 +11,4 @@ app.use('/api', routes_1.default);
 app.listen(port, function () {
     console.log("server started at port " + port);
 });
+exports.default = app;
