@@ -13,7 +13,7 @@ const resizeUsingSharp = async (
       .toFormat('jpeg')
       .toFile(destpath);
   } catch (error) {
-    console.log(error);
+    //failed to resize the image using sharp.
   }
 };
 

@@ -44,49 +44,65 @@ var fileExists_1 = __importDefault(require("./fileExists"));
 var resizeUsingSharp_1 = __importDefault(require("./resizeUsingSharp"));
 //middleware that performs the image resize functionality.
 var imageResize = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var filename, width, height, directory, destpath, sourcepath, imageExists, err_1;
+    var filename, widthstring, heightstring, width, height, directory, destpath, sourcepath, imageExists, err_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 6, , 7]);
                 filename = req.query.filename || '';
-                width = parseInt(req.query.width) || 0;
-                height = parseInt(req.query.height) || 0;
+                widthstring = req.query.width;
+                heightstring = req.query.height;
+                width = parseInt(widthstring) || 0;
+                height = parseInt(heightstring) || 0;
                 directory = path_1.default.resolve('./');
-                destpath = directory + '/assets/thumb/' + filename + '.jpg';
+                destpath = directory +
+                    '/assets/thumb/' +
+                    filename + '_' +
+                    widthstring +
+                    'x' +
+                    heightstring +
+                    '.jpg';
                 sourcepath = directory + '/assets/full/' + filename + '.jpg';
-                return [4 /*yield*/, (0, fileExists_1.default)(destpath)];
-            case 1:
-                imageExists = _a.sent();
-                if (!imageExists) return [3 /*break*/, 2];
-                //image exists
-                res.status(200).sendFile(destpath);
-                return [3 /*break*/, 5];
-            case 2:
-                //image doesn't exist, so resizing using sharp
                 if (filename == '') {
                     res.send('No filename provided');
                     return [2 /*return*/];
                 }
                 return [4 /*yield*/, (0, fileExists_1.default)(sourcepath)];
-            case 3:
+            case 1:
                 if (!(_a.sent())) {
                     res.send("file doesn't exist");
                     return [2 /*return*/];
                 }
-                if (width == 0 || height == 0) {
+                if (width <= 0 || height <= 0) {
                     res.send('Please provide valid width and height');
                     return [2 /*return*/];
                 }
-                return [4 /*yield*/, (0, resizeUsingSharp_1.default)(width, height, sourcepath, destpath)];
+                // have limited the width and height as positive integers below 4097 to avoid creating large files (since the input
+                // image size will be lower than that ).
+                if (width > 4096 || height > 4096) {
+                    res.send('Please keep width and height values below 4096');
+                    return [2 /*return*/];
+                }
+                return [4 /*yield*/, (0, fileExists_1.default)(destpath)];
+            case 2:
+                imageExists = _a.sent();
+                if (!imageExists) return [3 /*break*/, 3];
+                //image exists
+                res.status(200).sendFile(destpath);
+                return [3 /*break*/, 5];
+            case 3: 
+            //image doesn't exist, so resizing using sharp
+            return [4 /*yield*/, (0, resizeUsingSharp_1.default)(width, height, sourcepath, destpath)];
             case 4:
+                //image doesn't exist, so resizing using sharp
                 _a.sent();
                 res.status(200).sendFile(destpath);
                 _a.label = 5;
             case 5: return [3 /*break*/, 7];
             case 6:
                 err_1 = _a.sent();
-                console.log(err_1);
+                //some error occurred.
+                res.send('Image processing failed.');
                 return [3 /*break*/, 7];
             case 7:
                 next();

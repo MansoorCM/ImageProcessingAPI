@@ -8,7 +8,7 @@ describe('Tests the image processing', () => {
   it("creates an image of given name in the 'thumb' folder", async (done) => {
     const directory = path.resolve('./');
     const imagepath = directory + '/assets/full/berkshire.jpg';
-    const destpath = directory + '/assets/full/berkshire.jpg';
+    const destpath = directory + '/assets/thumb/berkshire.jpg';
     await resizeUsingSharp(400, 600, imagepath, destpath);
 
     expect(await fileExists(destpath)).toBe(true);

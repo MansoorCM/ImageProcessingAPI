@@ -52,7 +52,7 @@ describe('Tests the image processing', function () {
                 case 0:
                     directory = path_1.default.resolve('./');
                     imagepath = directory + '/assets/full/berkshire.jpg';
-                    destpath = directory + '/assets/full/berkshire.jpg';
+                    destpath = directory + '/assets/thumb/berkshire.jpg';
                     return [4 /*yield*/, (0, resizeUsingSharp_1.default)(400, 600, imagepath, destpath)];
                 case 1:
                     _b.sent();
