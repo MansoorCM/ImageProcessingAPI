@@ -6,7 +6,7 @@ const resizeUsingSharp = async (
   setheight: number,
   sourcepath: string,
   destpath: string
-) => {
+): Promise<void> => {
   try {
     await sharp(sourcepath)
       .resize(setwidth, setheight, { fit: 'contain' })

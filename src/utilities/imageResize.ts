@@ -8,7 +8,7 @@ const imageResize = async (
   req: express.Request,
   res: express.Response,
   next: Function
-) => {
+): Promise<void> => {
   try {
     // get query parameters
     const filename = req.query.filename || '';
