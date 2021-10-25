@@ -50,8 +50,8 @@ var imageResize = function (req, res, next) { return __awaiter(void 0, void 0, v
             case 0:
                 _a.trys.push([0, 6, , 7]);
                 filename = req.query.filename || '';
-                width = parseInt((req.query.width)) || 0;
-                height = parseInt((req.query.height)) || 0;
+                width = parseInt(req.query.width) || 0;
+                height = parseInt(req.query.height) || 0;
                 directory = path_1.default.resolve('./');
                 destpath = directory + '/assets/thumb/' + filename + '.jpg';
                 sourcepath = directory + '/assets/full/' + filename + '.jpg';
@@ -65,17 +65,17 @@ var imageResize = function (req, res, next) { return __awaiter(void 0, void 0, v
             case 2:
                 //image doesn't exist, so resizing using sharp
                 if (filename == '') {
-                    res.send('Invalid filename');
-                    return [2 /*return*/];
-                }
-                else if (width == 0 || height == 0) {
-                    res.send('Please provide valid width and height');
+                    res.send('No filename provided');
                     return [2 /*return*/];
                 }
                 return [4 /*yield*/, (0, fileExists_1.default)(sourcepath)];
             case 3:
                 if (!(_a.sent())) {
-                    res.send('file doesn\'t exist');
+                    res.send("file doesn't exist");
+                    return [2 /*return*/];
+                }
+                if (width == 0 || height == 0) {
+                    res.send('Please provide valid width and height');
                     return [2 /*return*/];
                 }
                 return [4 /*yield*/, (0, resizeUsingSharp_1.default)(width, height, sourcepath, destpath)];

@@ -9,6 +9,6 @@ var routes = express_1.default.Router();
 routes.get('/', function (req, res) {
     res.send('main api endpoint called');
 });
-// the image resize api (which uses the sharp module). 
+// the image resize api (which uses the sharp module).
 routes.use('/images', images_1.default);
 exports.default = routes;

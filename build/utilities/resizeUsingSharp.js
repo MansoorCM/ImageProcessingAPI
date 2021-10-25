@@ -48,8 +48,8 @@ var resizeUsingSharp = function (setwidth, setheight, sourcepath, destpath) { re
             case 0:
                 _a.trys.push([0, 2, , 3]);
                 return [4 /*yield*/, (0, sharp_1.default)(sourcepath)
-                        .resize(setwidth, setheight, { fit: "contain" })
-                        .toFormat("jpeg")
+                        .resize(setwidth, setheight, { fit: 'contain' })
+                        .toFormat('jpeg')
                         .toFile(destpath)];
             case 1:
                 _a.sent();

@@ -37,7 +37,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var fs_1 = require("fs");
-// checks if the resized image already exists. 
+// checks if the resized image already exists.
 var fileExists = function (path) { return __awaiter(void 0, void 0, void 0, function () { return __generator(this, function (_a) {
     switch (_a.label) {
         case 0: return [4 /*yield*/, fs_1.promises.stat(path).catch(function (e) { return false; })];

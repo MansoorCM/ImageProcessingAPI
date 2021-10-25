@@ -43,9 +43,9 @@ var path_1 = __importDefault(require("path"));
 var resizeUsingSharp_1 = __importDefault(require("../../utilities/resizeUsingSharp"));
 var fileExists_1 = __importDefault(require("../../utilities/fileExists"));
 //performs the image processing on the file berkshire.jpg and checks if processed image is in the 'thumbs' folder.
-//for accuracy if the file is already in the thumbs folder, delete it first before running the test.(this can be done in code). 
+//for accuracy if the file is already in the thumbs folder, delete it first before running the test.(this can be done in code).
 describe('Tests the image processing', function () {
-    it('creates an image of given name in the \'thumb\' folder', function (done) { return __awaiter(void 0, void 0, void 0, function () {
+    it("creates an image of given name in the 'thumb' folder", function (done) { return __awaiter(void 0, void 0, void 0, function () {
         var directory, imagepath, destpath, _a;
         return __generator(this, function (_b) {
             switch (_b.label) {

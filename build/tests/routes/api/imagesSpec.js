@@ -51,7 +51,7 @@ describe('Tests the image api endpoint', function () {
                 case 0: return [4 /*yield*/, request.get('/api/images').query({
                         filename: 'berkshire',
                         width: 300,
-                        height: 300
+                        height: 300,
                     })];
                 case 1:
                     response = _a.sent();
